@@ -1,0 +1,30 @@
+{
+  "name": "watoki/karma",
+  "description": "Event sourcing library for PHP",
+  "type": "library",
+  "require": {
+    "watoki/reflect": "*",
+    "watoki/stores": "*"
+  },
+  "require-dev": {
+    "rtens/scrut": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "watoki\\karma\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "spec\\watoki\\karma\\": "spec/"
+    }
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Nikolas Martens",
+      "email": "Nikolas.M@rtens.org"
+    }
+  ],
+  "minimum-stability": "dev"
+}
