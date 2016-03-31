@@ -30,7 +30,7 @@ of the past. This is also the principle of [event sourcing].
 
 To use *karma* in your project, require it with [Composer]
 
-    composer require rtens/karma
+    composer require watoki/karma
     
 If you would like to develop on *karma*, clone it with [git], download its dependencies with [composer] and execute
 the specification with [scrut].
