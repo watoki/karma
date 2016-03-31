@@ -4,6 +4,16 @@ namespace watoki\karma\implementations\aggregates;
 class ObjectAggregateFactory extends GenericAggregateFactory {
 
     /**
+     * @param array $identifierToAggregateRootMap
+     * @return static
+     */
+    public static function mappedRoot(array $identifierToAggregateRootMap) {
+        return new static(function ($command) use ($identifierToAggregateRootMap) {
+            return $identifierToAggregateRootMap[get_class($command)];
+        });
+    }
+
+    /**
      * @param object $command
      * @return string
      */
@@ -17,6 +27,15 @@ class ObjectAggregateFactory extends GenericAggregateFactory {
      */
     public function applyMethod($event) {
         return parent::applyMethod($event) . $this->name($event);
+    }
+
+    /**
+     * @param object $command
+     * @param mixed $identifier
+     * @return self
+     */
+    public function mapCommandToIdentifier($command, $identifier) {
+        return parent::mapCommandToIdentifier(get_class($command), $identifier);
     }
 
     /**

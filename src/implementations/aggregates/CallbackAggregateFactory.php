@@ -46,12 +46,11 @@ class CallbackAggregateFactory implements AggregateFactory {
 
     /**
      * @param mixed $command
-     * @param mixed $identifier
      * @return object
      */
-    public function buildAggregateRoot($command, $identifier) {
+    public function buildAggregateRoot($command) {
         return $this->buildAggregateRootCallback
-            ? call_user_func($this->buildAggregateRootCallback, $command, $identifier)
+            ? call_user_func($this->buildAggregateRootCallback, $command)
             : null;
     }
 

@@ -40,9 +40,8 @@ class GenericAggregateFactory implements AggregateFactory {
      * @return static
      */
     public static function mappedRoot(array $identifierToAggregateRootMap) {
-        /** @noinspection PhpUnusedParameterInspection */
-        return new static(function ($command, $identifier) use ($identifierToAggregateRootMap) {
-            return $identifierToAggregateRootMap[$identifier];
+        return new static(function ($command) use ($identifierToAggregateRootMap) {
+            return $identifierToAggregateRootMap[$command];
         });
     }
 
@@ -84,10 +83,9 @@ class GenericAggregateFactory implements AggregateFactory {
 
     /**
      * @param mixed $command
-     * @param mixed $identifier
      * @return object
      */
-    public function buildAggregateRoot($command, $identifier) {
-        return call_user_func($this->buildAggregateRootCallback, $command, $identifier);
+    public function buildAggregateRoot($command) {
+        return call_user_func($this->buildAggregateRootCallback, $command);
     }
 }

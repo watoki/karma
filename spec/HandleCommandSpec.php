@@ -102,10 +102,9 @@ class HandleCommandSpec {
             ->handle('foo');
     }
 
-    function buildAggregateFromIdentifier() {
-        $this->handler((new GenericAggregateFactory(function ($command, $identifier) {
+    function buildAggregateFromCommand() {
+        $this->handler((new GenericAggregateFactory(function ($command) {
             $this->assert->equals($command, 'foo');
-            $this->assert->equals($identifier, 'bar');
             return new GenericAggregateRoot();
         }))
             ->mapCommandToIdentifier('foo', 'bar'))

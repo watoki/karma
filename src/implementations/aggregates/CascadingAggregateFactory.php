@@ -48,11 +48,10 @@ class CascadingAggregateFactory implements AggregateFactory {
 
     /**
      * @param mixed $command
-     * @param mixed $identifier
      * @return object
      */
-    public function buildAggregateRoot($command, $identifier) {
-        return $this->first->buildAggregateRoot($command, $identifier)
-            ?: $this->second->buildAggregateRoot($command, $identifier);
+    public function buildAggregateRoot($command) {
+        return $this->first->buildAggregateRoot($command)
+            ?: $this->second->buildAggregateRoot($command);
     }
 }

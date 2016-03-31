@@ -6,8 +6,8 @@ use watoki\karma\implementations\aggregates\ObjectAggregateFactory;
 class CommandAggregateFactory extends ObjectAggregateFactory {
 
     public function __construct() {
-        parent::__construct(function (Command $command, $identifier) {
-            return $command->getAggregateRoot($identifier);
+        parent::__construct(function (Command $command) {
+            return $command->getAggregateRoot();
         });
     }
 

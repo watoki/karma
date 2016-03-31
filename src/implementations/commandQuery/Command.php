@@ -9,8 +9,7 @@ interface Command {
     public function getAggregateIdentifier();
 
     /**
-     * @param mixed $identifier
      * @return object
      */
-    public function getAggregateRoot($identifier);
+    public function getAggregateRoot();
 }

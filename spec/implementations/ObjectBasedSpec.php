@@ -54,11 +54,9 @@ class ObjectBasedSpec {
         $application = (new GenericApplication(
             $this->store,
             ObjectAggregateFactory::mappedRoot([
-                'foo' => new ObjectBasedSpec_FooAggregate(),
-                'bar' => new ObjectBasedSpec_BarAggregate()
+                ObjectBasedSpec_FooCommand::class => new ObjectBasedSpec_FooAggregate(),
+                ObjectBasedSpec_BarCommand::class => new ObjectBasedSpec_BarAggregate()
             ])
-                ->mapCommandToIdentifier(ObjectBasedSpec_FooCommand::class, 'foo')
-                ->mapCommandToIdentifier(ObjectBasedSpec_BarCommand::class, 'bar')
         ));
 
         $application->handle(new ObjectBasedSpec_FooCommand());

@@ -48,8 +48,8 @@ class CommandQueryApplicationSpec_Command implements Command {
         return 'foo';
     }
 
-    public function getAggregateRoot($identifier) {
-        return new CommandQueryApplicationSpec_AggregateRoot($identifier);
+    public function getAggregateRoot() {
+        return new CommandQueryApplicationSpec_AggregateRoot();
     }
 }
 
