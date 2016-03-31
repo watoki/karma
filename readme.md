@@ -12,15 +12,8 @@ The name refers to the [principle of cause and effect][karma] where all actions 
 the future of that entity. Hence the state of the world is only the sum of all events
 of the past. This is also the principle of [event sourcing].
 
->   Now as a man is like this or like that,<br>
-    according as he acts and according as he behaves, so will he be;<br>
-    a man of good acts will become good, a man of bad acts, bad;<br>
-    he becomes pure by pure deeds, bad by bad deeds;<br><br>
-    And here they say that a person consists of desires,<br>
-    and as is his desire, so is his will;<br>
-    and as is his will, so is his deed;<br>
-    and whatever deed he does, that he will reap.<br><br>
-    — Brihadaranyaka Upanishad, 7th Century BCE
+> Shallow men believe in luck or in circumstance. Strong men believe in cause and effect.<br>
+Ralph Waldo Emerson
 
 [event sourcing]: http://martinfowler.com/eaaDev/EventSourcing.html
 [karma]: https://en.wikipedia.org/wiki/Karma
