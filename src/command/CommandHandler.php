@@ -37,7 +37,7 @@ class CommandHandler {
      */
     public function handle($command) {
         $identifier = $this->aggregates->getAggregateIdentifier($command);
-        $aggregate = $this->aggregates->buildAggregateRoot($identifier);
+        $aggregate = $this->aggregates->buildAggregateRoot($command, $identifier);
 
         if (!is_object($aggregate)) {
             throw new \Exception('Aggregate root must be an object.');

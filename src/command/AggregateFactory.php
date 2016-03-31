@@ -22,8 +22,9 @@ interface AggregateFactory {
     public function getAggregateIdentifier($command);
 
     /**
+     * @param mixed $command
      * @param mixed $identifier
      * @return object
      */
-    public function buildAggregateRoot($identifier);
+    public function buildAggregateRoot($command, $identifier);
 }

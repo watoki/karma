@@ -24,7 +24,8 @@ class CascadingAggregateFactory implements AggregateFactory {
      * @return string
      */
     public function handleMethod($command) {
-        return $this->first->handleMethod($command) ?: $this->second->handleMethod($command);
+        return $this->first->handleMethod($command)
+            ?: $this->second->handleMethod($command);
     }
 
     /**
@@ -32,7 +33,8 @@ class CascadingAggregateFactory implements AggregateFactory {
      * @return string
      */
     public function applyMethod($event) {
-        return $this->first->applyMethod($event) ?: $this->second->applyMethod($event);
+        return $this->first->applyMethod($event)
+            ?: $this->second->applyMethod($event);
     }
 
     /**
@@ -40,14 +42,17 @@ class CascadingAggregateFactory implements AggregateFactory {
      * @return mixed
      */
     public function getAggregateIdentifier($command) {
-        return $this->first->getAggregateIdentifier($command) ?: $this->second->getAggregateIdentifier($command);
+        return $this->first->getAggregateIdentifier($command)
+            ?: $this->second->getAggregateIdentifier($command);
     }
 
     /**
+     * @param mixed $command
      * @param mixed $identifier
      * @return object
      */
-    public function buildAggregateRoot($identifier) {
-        return $this->first->buildAggregateRoot($identifier) ?: $this->second->buildAggregateRoot($identifier);
+    public function buildAggregateRoot($command, $identifier) {
+        return $this->first->buildAggregateRoot($command, $identifier)
+            ?: $this->second->buildAggregateRoot($command, $identifier);
     }
 }
