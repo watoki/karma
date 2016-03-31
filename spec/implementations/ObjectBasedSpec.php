@@ -94,6 +94,16 @@ class ObjectBasedSpec {
         $this->assert->equals($listener->heard, [new ObjectBasedSpec_FooEvent(new ObjectBasedSpec_FooCommand())]);
     }
 
+    function delegateListener() {
+        $listener = new ObjectBasedSpec_DelegateListener();
+        $application = $this->application()
+            ->addListener(new ObjectBasedSpec_Listener($listener));
+
+        $application->handle(new ObjectBasedSpec_FooCommand());
+
+        $this->assert->equals($listener->heard, [new ObjectBasedSpec_FooEvent(new ObjectBasedSpec_FooCommand())]);
+    }
+
     function projectQuery() {
         $this->store->append(new ObjectBasedSpec_FooEvent(), 'foo');
         $this->store->append(new ObjectBasedSpec_BarEvent(), 'bar');
@@ -212,6 +222,14 @@ class ObjectBasedSpec_BarQuery {
 }
 
 class ObjectBasedSpec_Listener extends StaticListener {
+    public $heard = [];
+
+    public function onObjectBasedSpec_FooEvent(ObjectBasedSpec_FooEvent $event) {
+        $this->heard[] = $event;
+    }
+}
+
+class ObjectBasedSpec_DelegateListener {
     public $heard = [];
 
     public function onObjectBasedSpec_FooEvent(ObjectBasedSpec_FooEvent $event) {

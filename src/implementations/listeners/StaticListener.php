@@ -5,12 +5,22 @@ use watoki\karma\command\EventListener;
 
 class StaticListener implements EventListener {
 
+    /** @var object */
+    private $listener;
+
+    /**
+     * @param object $listener Defaults to self
+     */
+    public function __construct($listener = null) {
+        $this->listener = $listener ?: $this;
+    }
+
     /**
      * @param mixed $event
      * @return bool
      */
     public function listensTo($event) {
-        return is_object($event) && method_exists($this, $this->methodName($event));
+        return is_object($event) && method_exists($this->listener, $this->methodName($event));
     }
 
     /**
@@ -18,7 +28,7 @@ class StaticListener implements EventListener {
      * @return void
      */
     public function on($event) {
-        call_user_func([$this, $this->methodName($event)], $event);
+        call_user_func([$this->listener, $this->methodName($event)], $event);
     }
 
     /**
