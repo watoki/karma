@@ -1,4 +1,4 @@
-# Karma [![Build Status](https://travis-ci.org/rtens/karma.png?branch=master)](https://travis-ci.org/rtens/karma)
+# Karma [![Build Status](https://travis-ci.org/watoki/karma.png?branch=master)](https://travis-ci.org/watoki/karma)
 
 *karma* is an [event sourcing] library for PHP. It helps you to
 
