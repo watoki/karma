@@ -71,6 +71,18 @@ class HandleCommandSpec {
         }))->handle('foo');
     }
 
+    function mapCommandToIdentifier() {
+        $this->store->append('one', 'foo');
+        $this->store->append('two', 'fool');
+
+        $this->handler(GenericAggregateFactory::staticRoot(new GenericAggregateRoot(function ($command, $events) {
+            $this->assert->equals($command, 'foo');
+            $this->assert->equals($events, ['two']);
+        }))->setGetAggregateIdentifierCallback(function ($command) {
+            return $command . 'l';
+        }))->handle('foo');
+    }
+
     function invokeListeners() {
         $heard = [];
         $this->genericHandler(new GenericAggregateRoot(function () {
@@ -106,9 +118,7 @@ class HandleCommandSpec {
         $this->handler((new GenericAggregateFactory(function ($command) {
             $this->assert->equals($command, 'foo');
             return new GenericAggregateRoot();
-        }))
-            ->mapCommandToIdentifier('foo', 'bar'))
-            ->handle('foo');
+        })))->handle('foo');
     }
 
     private function genericHandler($aggregateRoot) {

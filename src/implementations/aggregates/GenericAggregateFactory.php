@@ -7,8 +7,8 @@ class GenericAggregateFactory implements AggregateFactory {
 
     /** @var callable */
     private $buildAggregateRootCallback;
-    /** @var array */
-    private $commandIdentifierMap = [];
+    /** @var callable */
+    private $getAggregateIdentifierCallback;
 
     /**
      * @param callable $buildAggregateRoot
@@ -47,16 +47,6 @@ class GenericAggregateFactory implements AggregateFactory {
 
     /**
      * @param mixed $command
-     * @param mixed $identifier
-     * @return GenericAggregateFactory
-     */
-    public function mapCommandToIdentifier($command, $identifier) {
-        $this->commandIdentifierMap[(string)$command] = $identifier;
-        return $this;
-    }
-
-    /**
-     * @param mixed $command
      * @return string
      */
     public function handleMethod($command) {
@@ -76,9 +66,18 @@ class GenericAggregateFactory implements AggregateFactory {
      * @return mixed
      */
     public function getAggregateIdentifier($command) {
-        return isset($this->commandIdentifierMap[(string)$command])
-            ? $this->commandIdentifierMap[(string)$command]
+        return isset($this->getAggregateIdentifierCallback)
+            ? call_user_func($this->getAggregateIdentifierCallback, $command)
             : $command;
+    }
+
+    /**
+     * @param callable $getAggregateIdentifierCallback
+     * @return GenericAggregateFactory
+     */
+    public function setGetAggregateIdentifierCallback(callable $getAggregateIdentifierCallback) {
+        $this->getAggregateIdentifierCallback = $getAggregateIdentifierCallback;
+        return $this;
     }
 
     /**

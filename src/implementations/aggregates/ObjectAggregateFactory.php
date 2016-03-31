@@ -31,15 +31,6 @@ class ObjectAggregateFactory extends GenericAggregateFactory {
 
     /**
      * @param object $command
-     * @param mixed $identifier
-     * @return self
-     */
-    public function mapCommandToIdentifier($command, $identifier) {
-        return parent::mapCommandToIdentifier(get_class($command), $identifier);
-    }
-
-    /**
-     * @param object $command
      * @return mixed
      */
     public function getAggregateIdentifier($command) {
