@@ -36,13 +36,13 @@ class CommandHandler {
      * @throws \Exception
      */
     public function handle($command) {
-        $identifier = $this->aggregates->getAggregateIdentifier($command);
         $aggregate = $this->aggregates->buildAggregateRoot($command);
 
         if (!is_object($aggregate)) {
             throw new \Exception('Aggregate root must be an object.');
         }
 
+        $identifier = $this->aggregates->getAggregateIdentifier($command);
         $this->applyEvents($aggregate, $this->store->eventsOf($identifier));
 
         $events = $this->handleCommand($aggregate, $command);
