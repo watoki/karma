@@ -9,13 +9,8 @@ class CommandAggregateFactory extends ObjectAggregateFactory {
         parent::__construct(function (Command $command) {
             return $command->getAggregateRoot();
         });
-    }
-
-    /**
-     * @param Command $command
-     * @return mixed
-     */
-    public function getAggregateIdentifier($command) {
-        return $command->getAggregateIdentifier();
+        $this->setGetAggregateIdentifierCallback(function (Command $command) {
+            return $command->getAggregateIdentifier();
+        });
     }
 }

@@ -18,6 +18,7 @@ class CommandQueryApplicationSpec {
 
     function before() {
         CommandQueryApplicationSpec_AggregateRoot::$handled = [];
+        CommandQueryApplicationSpec_AggregateRoot::$applied = [];
         CommandQueryApplicationSpec_Projection::$applied = [];
 
         $this->store = new MemoryEventStore();
@@ -31,6 +32,16 @@ class CommandQueryApplicationSpec {
             [new CommandQueryApplicationSpec_Event()]);
         $this->assert->equals(CommandQueryApplicationSpec_AggregateRoot::$handled,
             [new CommandQueryApplicationSpec_Command()]);
+    }
+
+    function applyEvents() {
+        $this->store->append(new CommandQueryApplicationSpec_Event('foo'), 'foo');
+        $this->store->append(new CommandQueryApplicationSpec_Event('bar'), 'bar');
+
+        $this->application->handle(new CommandQueryApplicationSpec_Command());
+
+        $this->assert->equals(CommandQueryApplicationSpec_AggregateRoot::$applied,
+            [new CommandQueryApplicationSpec_Event('foo')]);
     }
 
     function projectQuery() {
@@ -55,15 +66,22 @@ class CommandQueryApplicationSpec_Command implements Command {
 
 class CommandQueryApplicationSpec_AggregateRoot {
     public static $handled;
+    public static $applied;
 
     public function handleCommandQueryApplicationSpec_Command(CommandQueryApplicationSpec_Command $command) {
         self::$handled[] = $command;
         return new CommandQueryApplicationSpec_Event();
     }
+
+    public function applyCommandQueryApplicationSpec_Event(CommandQueryApplicationSpec_Event $event) {
+        self::$applied[] = $event;
+    }
 }
 
 class CommandQueryApplicationSpec_Event {
-
+    public function __construct($id = null) {
+        $this->id = $id;
+    }
 }
 
 class CommandQueryApplicationSpec_Query implements Query {
