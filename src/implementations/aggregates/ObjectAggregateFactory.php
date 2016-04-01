@@ -36,13 +36,4 @@ class ObjectAggregateFactory extends GenericAggregateFactory {
     protected function name($object) {
         return (new \ReflectionClass($object))->getShortName();
     }
-
-    /**
-     * @param object $command
-     * @return mixed
-     */
-    public function getAggregateIdentifier($command) {
-        $identifier = parent::getAggregateIdentifier($command);
-        return $identifier == $command ? get_class($command) : $identifier;
-    }
 }

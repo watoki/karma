@@ -5,6 +5,8 @@ use watoki\karma\command\AggregateFactory;
 
 class GenericAggregateFactory implements AggregateFactory {
 
+    const DEFAULT_IDENTIFIER = 'karma';
+
     /** @var callable */
     private $buildAggregateRootCallback;
     /** @var callable */
@@ -68,7 +70,7 @@ class GenericAggregateFactory implements AggregateFactory {
     public function getAggregateIdentifier($command) {
         return isset($this->getAggregateIdentifierCallback)
             ? call_user_func($this->getAggregateIdentifierCallback, $command)
-            : $command;
+            : self::DEFAULT_IDENTIFIER;
     }
 
     /**

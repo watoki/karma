@@ -60,10 +60,10 @@ class HandleCommandSpec {
         $this->assert->equals($this->store->allEvents(), ['one', 'bar', 'baz']);
     }
 
-    function applyEvents() {
-        $this->store->append('one', 'foo');
-        $this->store->append('two', 'bar');
-        $this->store->append('three', 'foo');
+    function applyEventsWithDefaultIdentifier() {
+        $this->store->append('one', 'karma');
+        $this->store->append('two', 'other');
+        $this->store->append('three', 'karma');
 
         $this->genericHandler(new GenericAggregateRoot(function ($command, $events) {
             $this->assert->equals($command, 'foo');

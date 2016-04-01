@@ -38,8 +38,8 @@ class ObjectBasedSpec {
     }
 
     function applyEvents() {
-        $this->store->append(new ObjectBasedSpec_FooEvent(), ObjectBasedSpec_FooCommand::class);
-        $this->store->append(new ObjectBasedSpec_BarEvent(), ObjectBasedSpec_FooCommand::class);
+        $this->store->append(new ObjectBasedSpec_FooEvent(), 'karma');
+        $this->store->append(new ObjectBasedSpec_BarEvent(), 'karma');
 
         $this->application()
             ->handle(new ObjectBasedSpec_FooCommand());
