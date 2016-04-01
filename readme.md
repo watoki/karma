@@ -2,11 +2,11 @@
 
 *karma* is an [event sourcing] library for PHP. It helps you to
 
-* handle commands
-* store events
-* protect invariants
-* react to events
-* project events
+* [handle commands](http://github.com/watoki/karma/tree/master/spec/usage/HandleCommandsSpec.php)
+* [store events](http://github.com/watoki/karma/tree/master/spec/usage/StoreEventsSpec.php)
+* [protect invariants](http://github.com/watoki/karma/tree/master/spec/usage/ProtectInvariantsSpec.php)
+* [react to events](http://github.com/watoki/karma/tree/master/spec/usage/ReactToEventsSpec.php)
+* [project events](http://github.com/watoki/karma/tree/master/spec/usage/ProjectEventsSpec.php)
 * test an application
 
 The name refers to the [principle of cause and effect][karma] where all actions of an entity influence
@@ -37,139 +37,6 @@ the specification with [scrut].
 [composer]: http://getcomposer.org/download/
 [git]: https://git-scm.com/
 [scrut]: https://github.com/rtens/scrut
-
-
-## Usage
-
-```php
-$store = new MemoryEventStore();
-$application = new CommandQueryApplication($store);
-```
-
-### Handle Commands
-
-```php
-class MyAggregate {
-
-    public function handleFoo(Foo $foo) {
-        echo "Handled " . $foo->what;
-    }
-}
-```
-
-```php
-$application->handle(new Foo('this'));
-```
-
-```php
-class Foo extends MyCommand {
-
-    public function __construct($what) {
-        $this->what = $what;
-    }
-}
-```
-
-```php
-class MyCommand implements Command {
-
-    public function getAggregateIdentifier() {
-        return 'foo';
-    }
-
-    public function getAggregateRoot() {
-        return new MyAggregate();
-    }
-}
-```
-
-### Store Events
-
-```php
-class Fooed {
-
-    public function __construct($how) {
-        $this->how = $how;
-    }
-}
-```
-
-```php
-class MyAggregate {
-
-    public function handleFoo(Foo $foo) {
-        return new Fooed($foo->what . ' happened');
-    }
-}
-```
-
-```php
-$application->handle(new Foo('this'));
-var_dump($store->allEvents());
-```
-
-### React to Events
-
-```php
-class MyListener {
-
-    public function onFooed(Fooed $fooed) {
-        echo "Looks like " . $fooed->what;
-    }
-}
-```
-
-```php
-$application->addListener(new StaticListener(new MyListener()));
-$application->handle(new Foo('this'));
-```
-
-### Protect Invariants
-
-```php
-class MyAggregate {
-
-    private $fooed = false;
-
-    public function applyFooed() {
-        $this->fooed = true;
-    }
-
-    public function handleFoo(Foo $foo) {
-        if ($this->fooed) {
-            throw new \Exception('Foo me once shame on you, foo me twice shame on me');
-        }
-        return new Fooed($foo->that . ' happened');
-    }
-}
-```
-
-### Project Events
-
-```php
-class MyProjection {
-
-    public $fooed = [];
-
-    public function applyFooed(Fooed $fooed) {
-        $this->fooed[] = 'So ' . $fooed->what;
-    }
-}
-```
-
-```php
-$bar = $application->handle(new Bar());
-echo implode(PHP_EOL, $bar->fooed);
-```
-
-```php
-class Bar implements Query {
-
-    public function getProjection() {
-        return new MyProjection();
-    }
-}
-```
 
 
 ## Documentation
