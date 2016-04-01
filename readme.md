@@ -4,9 +4,10 @@
 
 * handle commands
 * store events
+* protect invariants
 * react to events
 * project events
-* test your application
+* test an application
 
 The name refers to the [principle of cause and effect][karma] where all actions of an entity influence
 the future of that entity. Hence the state of the world is only the sum of all events
@@ -19,7 +20,7 @@ Ralph Waldo Emerson
 [karma]: https://en.wikipedia.org/wiki/Karma
 
 
-## Installation ##
+## Installation
 
 To use *karma* in your project, require it with [Composer]
 
@@ -38,29 +39,140 @@ the specification with [scrut].
 [scrut]: https://github.com/rtens/scrut
 
 
-## Usage ##
-
-To just make sure that everything is piped together correctly you can do this
+## Usage
 
 ```php
-(new GenericApplication(
-    new MemoryEventStore()
-))->handle('foo');
+$store = new MemoryEventStore();
+$application = new CommandQueryApplication($store);
 ```
 
-This simply appends processed commands to the event store
+### Handle Commands
 
 ```php
-(new GenericApplication(
-    new StoringEventStore(new FileStore(__DIR__)),
-    GenericAggregateFactory::genericRoot(function ($command) {
-        return "handled $command";
-    })
-))->handle('foo');
+class MyAggregate {
+
+    public function handleFoo(Foo $foo) {
+        echo "Handled " . $foo->what;
+    }
+}
+```
+
+```php
+$application->handle(new Foo('this'));
+```
+
+```php
+class Foo extends MyCommand {
+
+    public function __construct($what) {
+        $this->what = $what;
+    }
+}
+```
+
+```php
+class MyCommand implements Command {
+
+    public function getAggregateIdentifier() {
+        return 'foo';
+    }
+
+    public function getAggregateRoot() {
+        return new MyAggregate();
+    }
+}
+```
+
+### Store Events
+
+```php
+class Fooed {
+
+    public function __construct($how) {
+        $this->how = $how;
+    }
+}
+```
+
+```php
+class MyAggregate {
+
+    public function handleFoo(Foo $foo) {
+        return new Fooed($foo->what . ' happened');
+    }
+}
+```
+
+```php
+$application->handle(new Foo('this'));
+var_dump($store->allEvents());
+```
+
+### React to Events
+
+```php
+class MyListener {
+
+    public function onFooed(Fooed $fooed) {
+        echo "Looks like " . $fooed->what;
+    }
+}
+```
+
+```php
+$application->addListener(new StaticListener(new MyListener()));
+$application->handle(new Foo('this'));
+```
+
+### Protect Invariants
+
+```php
+class MyAggregate {
+
+    private $fooed = false;
+
+    public function applyFooed() {
+        $this->fooed = true;
+    }
+
+    public function handleFoo(Foo $foo) {
+        if ($this->fooed) {
+            throw new \Exception('Foo me once shame on you, foo me twice shame on me');
+        }
+        return new Fooed($foo->that . ' happened');
+    }
+}
+```
+
+### Project Events
+
+```php
+class MyProjection {
+
+    public $fooed = [];
+
+    public function applyFooed(Fooed $fooed) {
+        $this->fooed[] = 'So ' . $fooed->what;
+    }
+}
+```
+
+```php
+$bar = $application->handle(new Bar());
+echo implode(PHP_EOL, $bar->fooed);
+```
+
+```php
+class Bar implements Query {
+
+    public function getProjection() {
+        return new MyProjection();
+    }
+}
 ```
 
 
-## Documentation ##
+## Documentation
 
 The documentation of *karma* is written in the form of an executable specification. You find it in the [`spec`] folder.
 
