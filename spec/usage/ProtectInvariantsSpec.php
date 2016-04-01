@@ -7,7 +7,6 @@ use watoki\karma\implementations\commandQuery\CommandQueryApplication;
 use watoki\karma\stores\MemoryEventStore;
 
 class Foo4Aggregate {
-
     private $fooed = false;
 
     public function applyFooed4() {

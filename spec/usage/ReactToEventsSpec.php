@@ -7,10 +7,10 @@ use watoki\karma\implementations\listeners\StaticListener;
 use watoki\karma\stores\MemoryEventStore;
 
 class FooListener {
-    public static $heard;
+    public static $heard = [];
 
     public function onFooed3(Fooed3 $fooed) {
-        self::$heard = $fooed;
+        self::$heard[] = $fooed;
     }
 }
 
@@ -21,7 +21,7 @@ class ReactToEventsSpec {
         $application->addListener(new StaticListener(new FooListener()));
         $application->handle(new Foo3('this'));
 
-        $assert(FooListener::$heard, new Fooed3('this happened'));
+        $assert(FooListener::$heard, [new Fooed3('this happened')]);
     }
 }
 

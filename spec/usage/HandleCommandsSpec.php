@@ -6,20 +6,20 @@ use watoki\karma\implementations\commandQuery\CommandQueryApplication;
 use watoki\karma\stores\MemoryEventStore;
 
 class FooAggregate {
+    public static $handled = [];
 
     public function handleFoo(Foo $foo) {
-        HandleCommandsSpec::$handled = $foo;
+        self::$handled[] = $foo;
     }
 }
 
 class HandleCommandsSpec {
-    public static $handled;
 
     function handleCommands($assert) {
         $application = new CommandQueryApplication(new MemoryEventStore());
         $application->handle(new Foo('that'));
 
-        $assert(self::$handled, new Foo('that'));
+        $assert(FooAggregate::$handled, [new Foo('that')]);
     }
 }
 
