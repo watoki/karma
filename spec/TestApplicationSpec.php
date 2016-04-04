@@ -225,6 +225,22 @@ class TestApplicationSpec {
 
         $spec->when('project');
         $spec->then->shouldReturn(new GenericProjection());
+
+        $this->assert->pass();
+    }
+
+    function matchingProjection() {
+        $spec = $this->projection();
+
+        $spec->given('food');
+        $spec->given('bard');
+
+        $spec->when('project');
+        $spec->then->returnShouldMatch(function (GenericProjection $projection) {
+            return $projection->getEvents() == ['food', 'bard'];
+        });
+
+        $this->assert->pass();
     }
 
     private function command(AggregateFactory $aggregate = null, array $listeners = []) {
@@ -235,7 +251,7 @@ class TestApplicationSpec {
 
     private function projection() {
         return new Specification(function (EventStore $store) {
-            return (new GenericApplication($store))->setCommandPattern('/project/');
+            return (new GenericApplication($store))->setCommandPattern('/foo/');
         });
     }
 }

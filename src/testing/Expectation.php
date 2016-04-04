@@ -119,7 +119,13 @@ class Expectation {
     }
 
     public function shouldReturn($projection) {
-        if ($this->outcome->returned != $projection) {
+        $this->returnShouldMatch(function ($returned) use ($projection) {
+            return $returned == $projection;
+        });
+    }
+
+    public function returnShouldMatch(callable $condition) {
+        if (!$condition($this->outcome->returned)) {
             throw new FailedExpectation('Unexpected return value');
         }
     }
