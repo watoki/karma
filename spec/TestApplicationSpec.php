@@ -241,11 +241,40 @@ class TestApplicationSpec {
         $spec->given('bard');
 
         $spec->when('project');
+
         $spec->then->returnShouldMatch(function (GenericProjection $projection) {
             return $projection->getEvents() == ['food', 'bard'];
         });
 
-        $this->assert->pass();
+        $this->try->tryTo(function () use ($spec) {
+            $spec->then->returnShouldMatch(function (GenericProjection $projection) {
+                return $projection->getEvents() == ['bard'];
+            });
+        });
+        $this->try->thenTheException_ShouldBeThrown('Unexpected return value');
+    }
+
+    function matchingComplexProjection() {
+        $spec = $this->projection();
+
+        $spec->given('food');
+        $spec->given('bard');
+
+        $spec->when('project');
+        $spec->then->returnShouldMatchAll(function (GenericProjection $projection) {
+            return [
+                [$projection->getEvents(), ['food', 'bard']]
+            ];
+        });
+
+        $this->try->tryTo(function () use ($spec) {
+            $spec->then->returnShouldMatchAll(function (GenericProjection $projection) {
+                return [
+                    [$projection->getEvents(), ['bard']]
+                ];
+            });
+        });
+        $this->try->thenTheException_ShouldBeThrown('No matching event found: [["food","bard"]]');
     }
 
     private function command(AggregateFactory $aggregate = null, array $listeners = []) {

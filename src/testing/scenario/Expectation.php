@@ -78,23 +78,23 @@ class Expectation {
     private function evaluateConditions(callable $conditions) {
         $evaluatedConditions = [];
         foreach ($this->store->allEvents() as $event) {
-            $evaluatedConditions[] = $this->evaluateConditionsForEvent($conditions, $event) ?: true;
+            $evaluatedConditions[] = $this->evaluateConditionsFor($conditions, $event);
         }
         return $evaluatedConditions;
     }
 
 
-    private function evaluateConditionsForEvent(callable $conditions, $event) {
+    private function evaluateConditionsFor(callable $conditions, $value) {
         $evaluated = [];
 
-        foreach ($conditions($event) as $name => $condition) {
+        foreach ($conditions($value) as $name => $condition) {
             if (is_array($condition) && count($condition) == 2 && $condition[0] != $condition[1]) {
                 $evaluated[$name] = $condition[0];
             } else if (!$condition) {
                 $evaluated[$name] = false;
             }
         }
-        return $evaluated;
+        return $evaluated ?: true;
     }
 
     public function shouldMatchClass($class) {
@@ -130,6 +130,14 @@ class Expectation {
     public function returnShouldMatch(callable $condition) {
         if (!$condition($this->outcome->returned)) {
             throw new FailedExpectation('Unexpected return value');
+        }
+    }
+
+    public function returnShouldMatchAll(callable $conditions) {
+        $evaluatedConditions = $this->evaluateConditionsFor($conditions, $this->outcome->returned);
+
+        if ($evaluatedConditions !== true) {
+            throw new FailedExpectation('No matching event found: ' . json_encode($evaluatedConditions));
         }
     }
 }
