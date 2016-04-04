@@ -1,8 +1,10 @@
 <?php
-namespace watoki\karma\testing;
+namespace watoki\karma\testing\scenario;
 
 use watoki\karma\Application;
 use watoki\karma\stores\EventStore;
+use watoki\karma\testing\result\FailedExpectation;
+use watoki\karma\testing\result\MetExpectation;
 
 class Expectation {
 

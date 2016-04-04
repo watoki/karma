@@ -1,5 +1,7 @@
 <?php
-namespace watoki\karma\testing;
+namespace watoki\karma\testing\scenario;
+
+use watoki\karma\testing\result\FailedExpectation;
 
 class Surprise {
 

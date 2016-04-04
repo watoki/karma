@@ -1,5 +1,5 @@
 <?php
-namespace watoki\karma\testing;
+namespace watoki\karma\testing\scenario;
 
 class Outcome {
 

@@ -6,6 +6,10 @@ use watoki\karma\command\EventListener;
 use watoki\karma\implementations\aggregates\GenericAggregateFactory;
 use watoki\karma\stores\EventStore;
 use watoki\karma\stores\MemoryEventStore;
+use watoki\karma\testing\scenario\Action;
+use watoki\karma\testing\scenario\Context;
+use watoki\karma\testing\scenario\Expectation;
+use watoki\karma\testing\scenario\Outcome;
 
 class Specification {
 
