@@ -9,7 +9,7 @@ use watoki\karma\stores\MemoryEventStore;
 use watoki\karma\testing\scenario\Action;
 use watoki\karma\testing\scenario\Context;
 use watoki\karma\testing\scenario\Expectation;
-use watoki\karma\testing\scenario\Outcome;
+use watoki\karma\testing\result\Outcome;
 
 class Specification {
 

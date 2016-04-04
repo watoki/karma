@@ -2,6 +2,7 @@
 namespace watoki\karma\testing\scenario;
 
 use watoki\karma\Application;
+use watoki\karma\testing\result\Outcome;
 
 class Action {
 

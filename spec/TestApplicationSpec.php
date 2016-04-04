@@ -193,12 +193,17 @@ class TestApplicationSpec {
         $spec->given(new \DateTime('2011-12-14'));
 
         $spec->then->not->shouldMatchClass(\DateTimeInterface::class);
-
         $spec->then->shouldMatchClass(\DateTime::class)->count(2);
+
+        $spec->then->shouldMatchObject(\DateTimeInterface::class)->count(3);
 
         $spec->then->shouldMatchObject(\DateTime::class, function (\DateTime $dateTime) {
             return $dateTime > new \DateTime('2011-12-13');
         })->count(1);
+
+        $spec->then->shouldMatchObject(\DateTimeInterface::class, function (\DateTimeInterface $dateTime) {
+            return $dateTime == new \DateTime('2011-12-13');
+        })->count(2);
 
         $spec->then->shouldMatchAllObject(\DateTime::class, function (\DateTime $dateTime) {
             return [

@@ -3,6 +3,7 @@ namespace watoki\karma\testing\scenario;
 
 use watoki\karma\Application;
 use watoki\karma\stores\EventStore;
+use watoki\karma\testing\result\Outcome;
 use watoki\karma\testing\result\FailedExpectation;
 use watoki\karma\testing\result\MetExpectation;
 
@@ -102,9 +103,9 @@ class Expectation {
         });
     }
 
-    public function shouldMatchObject($class, callable $condition) {
+    public function shouldMatchObject($class, callable $condition = null) {
         return $this->shouldMatch(function ($event) use ($class, $condition) {
-            return is_object($event) && get_class($event) == $class && $condition($event);
+            return is_object($event) && is_a($event, $class) && (!$condition || $condition($event));
         });
     }
 
@@ -112,7 +113,7 @@ class Expectation {
         return $this->shouldMatchAll(function ($event) use ($class, $conditions) {
             if (!is_object($event)) {
                 return ['isObject' => false];
-            } else if (get_class($event) != $class) {
+            } else if (!is_a($event, $class)) {
                 return ['class' => [get_class($event), $class]];
             } else {
                 return $conditions($event);
