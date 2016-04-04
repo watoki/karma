@@ -3,7 +3,6 @@
   "description": "Event sourcing library for PHP",
   "type": "library",
   "require": {
-    "watoki/reflect": "*",
     "watoki/stores": "*"
   },
   "require-dev": {
